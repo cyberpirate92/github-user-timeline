@@ -25,8 +25,7 @@ export class HeaderComponent implements OnInit {
 		if (this.username) {
 			console.log('Username: ' + this.username);
 			this.githubService.getUserRepositories(this.username);
-		}
-		else {
+		} else {
 			console.log('Empty username');
 		}
 	}

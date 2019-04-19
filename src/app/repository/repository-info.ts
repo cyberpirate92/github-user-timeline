@@ -11,6 +11,7 @@ interface RepositoryInfo {
 	forks_count: number;
 	open_issues_count: number;
 	license: RepositoryLicense;
+	language: string;
 }
 
 interface RepositoryLicense {
