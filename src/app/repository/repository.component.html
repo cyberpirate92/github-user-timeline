@@ -1,0 +1,41 @@
+<div class="row" *ngFor="let item of this.items">
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col">{{toDateString(this.item.created_at)}} <span class="fa fa-long-arrow-right"></span> {{toDateString(this.item.updated_at)}}</div>
+					<div class="col text-right">
+						<span class="fa fa-balance-scale"></span> 
+						<span *ngIf="this.item.license?.name; else noLicense"> {{this.item.license?.name}}</span>
+						<ng-template #noLicense>
+							<span class="text-muted"> No License</span>
+						</ng-template>
+					</div>
+				</div>
+				<h5 class="card-title">{{this.item.name}}</h5>
+				<p class="card-text">{{this.item.description}}</p>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+						<div class="row">
+							<div class="col-3">
+								<span class="fa fa-star text-primary"></span> {{this.item.stargazers_count}}
+							</div>
+							<div class="col-3">
+								<span class="fa fa-code-fork text-primary"></span> {{this.item.forks_count}}
+							</div>
+							<div class="col-3">
+								<span class="fa fa-eye text-primary"></span> {{this.item.watchers_count}}
+							</div>
+							<div class="col-3">
+								<span class="fa fa-exclamation-circle text-primary"></span> {{this.item.open_issues_count}}
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-right">
+						<a href="{{this.item.html_url}}" class="btn btn-primary">Open</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
