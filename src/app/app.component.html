@@ -1,5 +1,3 @@
 <app-header></app-header>
-<div *ngIf="this.userRepositories?.length > 0">
-  <app-repository [items]="this.userRepositories"></app-repository>
-</div>
+<app-repository [items]="this.userRepositories"></app-repository> 
 <router-outlet></router-outlet>

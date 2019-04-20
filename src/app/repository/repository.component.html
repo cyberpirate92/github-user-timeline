@@ -1,6 +1,12 @@
+<div class="row" *ngIf="!this.items || this.items?.length <= 0">
+	<div class="col-12 text-center text-muted mt-3 p-3">
+		<p><span [ngClass]="this.errorMessage ? 'fa fa-exclamation-circle fa-4x text-danger' :  'fa fa-info-circle fa-4x'"></span></p>
+		<p><span [ngClass]="this.errorMessage ? 'text-danger' : ''">{{ this.errorMessage ? this.errorMessage : this.EMPTY_MESSAGE }}</span></p>
+	</div>
+</div>
 <div class="row mt-3" *ngFor="let item of this.items; let i = index">
 	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 offset-md-3 offset-lg-3">
-		<div class="card">
+		<div class="card z-3" [ngClass]="{'mb-5': i === this.items.length-1, 'obsolete': this.isLoading}">
 			<div class="card-header">
 				<div class="row">
 					<div class="col">{{toDateString(this.item.created_at)}} <span class="fa fa-long-arrow-right"></span>
@@ -45,7 +51,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-right">
-						<a href="{{this.item.html_url}}" target="_blank" class="btn btn-primary"><span
+						<a href="{{this.isLoading ? '#' : this.item.html_url}}" target="{{this.isLoading ? '' : '_blank'}}" class="btn btn-primary"><span
 								class="fa fa-external-link"></span> Open</a>
 					</div>
 				</div>

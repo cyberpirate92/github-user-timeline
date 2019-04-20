@@ -9,24 +9,20 @@ import { GithubService } from '../github.service';
 export class HeaderComponent implements OnInit {
 
 	public username = '';
+	public showLoadingSpinner = false;
 
 	constructor(private githubService: GithubService) { }
 
 	ngOnInit() {
-		console.log('header initialized');
+		this.githubService.isLoading.subscribe(value => this.showLoadingSpinner = value);
 	}
 
 	public onUsernameChange(data: Event) {
-		console.log('Username change: ' + this.username);
 	}
 
 	public onSearchClick(event: Event): void {
-		console.log('Search clicked');
 		if (this.username) {
-			console.log('Username: ' + this.username);
 			this.githubService.getUserRepositories(this.username);
-		} else {
-			console.log('Empty username');
 		}
 	}
 }

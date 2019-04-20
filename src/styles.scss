@@ -1,4 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 body {
     background-image: url('./assets/images/wavecut.png');
+    scroll-behavior: smooth;
+}
+.z-3 {
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 0px 5px 1px #e2e2e2;
+}
+.z-3:hover {
+    box-shadow: 0px 0px 7px 1px #888888;
+}
+.obsolete {
+    opacity: 0.25;
 }
