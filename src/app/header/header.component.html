@@ -1,18 +1,19 @@
 <div class="row bg-dark">
 	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 offset-md-3 offset-lg-3 p-3">
-		<div class="input-group">
-			<div class="input-group-prepend">
-				<span class="input-group-text" id="inputGroup-sizing-default">github.com/</span>
+		<form [formGroup]="this.usernameForm" (submit)="this.onSearchClick($event)">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="inputGroup-sizing-default">github.com/</span>
+				</div>
+				<input type="text" class="form-control" placeholder="Type here..." formControlName="username">
+				<div class="input-group-append">
+					<button class="btn" [ngClass]="this.showLoadingSpinner ? 'btn-danger' : 'btn-primary'"
+						[disabled]="this.usernameForm.invalid || this.showLoadingSpinner" type="button"
+						(click)="this.onSearchClick($event)"><span
+							[ngClass]="showLoadingSpinner ? 'fa fa-spin fa-spinner' : 'fa fa-search'"></span>
+					</button>
+				</div>
 			</div>
-			<input type="text" class="form-control" placeholder="Type here..." [(ngModel)]="this.username"
-				(change)="this.onUsernameChange($event)">
-			<div class="input-group-append">
-				<button class="btn" [ngClass]="this.showLoadingSpinner ? 'btn-danger' : 'btn-primary'"
-					[disabled]="(this.username.length<=0) || this.showLoadingSpinner" type="button"
-					(click)="this.onSearchClick($event)"><span
-						[ngClass]="showLoadingSpinner ? 'fa fa-spin fa-spinner' : 'fa fa-search'"></span>
-				</button>
-			</div>
-		</div>
+		</form>
 	</div>
 </div>

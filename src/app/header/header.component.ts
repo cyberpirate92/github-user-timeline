@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubService } from '../github.service';
+import { FormGroup, FormControl, RequiredValidator, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-header',
@@ -8,21 +9,26 @@ import { GithubService } from '../github.service';
 })
 export class HeaderComponent implements OnInit {
 
-	public username = '';
 	public showLoadingSpinner = false;
+	public usernameForm: FormGroup;
 
-	constructor(private githubService: GithubService) { }
-
-	ngOnInit() {
-		this.githubService.isLoading.subscribe(value => this.showLoadingSpinner = value);
+	constructor(private githubService: GithubService) {
+		this.usernameForm = new FormGroup({
+			username: new FormControl('', [Validators.required]),
+		});
 	}
 
-	public onUsernameChange(data: Event) {
+	ngOnInit() {
+		this.githubService.isLoading.subscribe(value => {
+			this.showLoadingSpinner = value;
+			value ? this.usernameForm.disable() : this.usernameForm.enable();
+		});
 	}
 
 	public onSearchClick(event: Event): void {
-		if (this.username) {
-			this.githubService.getUserRepositories(this.username);
+		const username = this.usernameForm.get('username').value;
+		if (username) {
+			this.githubService.getUserRepositories(username);
 		}
 	}
 }

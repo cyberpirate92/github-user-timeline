@@ -21,16 +21,19 @@ export class GithubService {
 
 	public getUserRepositories(username: string): void {
 		this.isLoading.next(true);
-		if (this.inMemoryCache.has(username)) {
-			const cacheItem = this.inMemoryCache.get(username);
-			if (cacheItem && getDifferenceInMinutes(new Date(), cacheItem.timestamp) >= this.MAX_DURATION_MINUTES) {
-				this.inMemoryCache.delete(username);
-				this.getRepositories(username, 1);
+		if (username) {
+			username = username.toLowerCase();
+			if (this.inMemoryCache.has(username)) {
+				const cacheItem = this.inMemoryCache.get(username);
+				if (cacheItem && getDifferenceInMinutes(new Date(), cacheItem.timestamp) >= this.MAX_DURATION_MINUTES) {
+					this.inMemoryCache.delete(username);
+					this.getRepositories(username, 1);
+				} else {
+					this.broadcastResult(cacheItem.item);
+				}
 			} else {
-				this.broadcastResult(cacheItem.item);
+				this.getRepositories(username, 1);
 			}
-		} else {
-			this.getRepositories(username, 1);
 		}
 	}
 
