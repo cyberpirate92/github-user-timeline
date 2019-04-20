@@ -7,7 +7,7 @@
 <div class="row mt-3" *ngFor="let item of this.items; let i = index">
 	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 offset-md-3 offset-lg-3">
 		<div class="card z-3" [ngClass]="{'mb-5': i === this.items.length-1, 'obsolete': this.isLoading}">
-			<div class="card-header">
+			<div class="card-header bg-dark text-white">
 				<div class="row">
 					<div class="col">{{toDateString(this.item.created_at)}} <span class="fa fa-long-arrow-right"></span>
 						{{toDateString(this.item.updated_at)}}</div>
@@ -15,7 +15,7 @@
 						<span class="fa fa-balance-scale"></span>
 						<span *ngIf="this.item.license?.name; else noLicense"> {{this.item.license?.name}}</span>
 						<ng-template #noLicense>
-							<span class="text-muted"> No License</span>
+							<span class="text-muted-light"> No License</span>
 						</ng-template>
 					</div>
 				</div>

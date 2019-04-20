@@ -61,6 +61,11 @@ export class GithubService {
 				this.isLoading.next(null);
 				if (error && error.status === 404) {
 					this.errors.next(`No user exists with username '${username}'`);
+				} else if (error && error.status === 403) {
+					const resetTime = new Date(parseInt(error.headers.get('X-RateLimit-Reset'), 10) * 1000);
+					const timeLeftInMinutes = getDifferenceInMinutes(new Date(), resetTime) + 1;
+					this.errors.next(`Request is blocked by Github API as you have reached the API rate limit.
+					 Please try again after ${timeLeftInMinutes} minutes.`);
 				} else {
 					this.errors.next(error.message);
 				}
