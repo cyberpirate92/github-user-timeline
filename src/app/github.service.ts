@@ -10,6 +10,7 @@ export class GithubService {
 	private inMemoryCache: Map<string, CacheItem<RepositoryInfo[]>> = new Map();
 	private temp: RepositoryInfo[] = [];
 	private MAX_DURATION_MINUTES = 60;
+	private PER_PAGE_COUNT = 100;
 
 	public userRepositoryData: BehaviorSubject<RepositoryInfo[]> = new BehaviorSubject<RepositoryInfo[]>(null);
 	public isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -39,23 +40,33 @@ export class GithubService {
 		this.userRepositoryData.next(data);
 	}
 
+	private collectResults(username: string): void {
+		this.broadcastResult(this.temp);
+		this.inMemoryCache.set(username, {
+			timestamp: new Date(),
+			item: this.temp
+		});
+		this.temp = [];
+	}
+
 	private getRepositories(username: string, pageNumber: number): void {
 		if (username) {
 			this.httpClient.get(this.getRepoEndpoint(username, pageNumber)).subscribe((repos: RepositoryInfo[]) => {
-				if (repos && repos.length > 0) {
-					repos.filter(repo => !repo.fork).forEach(repo => {
-						repo.created_at = new Date(repo.created_at);
-						repo.updated_at = new Date(repo.updated_at);
-						this.temp.push(repo);
+				if (repos) {
+					repos.forEach(repo => {
+						if (!repo.fork) {
+							repo.created_at = new Date(repo.created_at);
+							repo.updated_at = new Date(repo.updated_at);
+							this.temp.push(repo);
+						}
 					});
-					this.getRepositories(username, pageNumber + 1);
+					if (repos.length < this.PER_PAGE_COUNT) {
+						this.collectResults(username);
+					} else {
+						this.getRepositories(username, pageNumber + 1);
+					}
 				} else {
-					this.broadcastResult(this.temp);
-					this.inMemoryCache.set(username, {
-						timestamp: new Date(),
-						item: this.temp
-					});
-					this.temp = [];
+					this.collectResults(username);
 				}
 			}, (error: HttpErrorResponse) => {
 				this.isLoading.next(null);
@@ -75,6 +86,6 @@ export class GithubService {
 	}
 
 	private getRepoEndpoint(username: string, pageNumber: number): string {
-		return `https://api.github.com/users/${username}/repos?type=owner&sort=created&direction=asc&per_page=100&page=${pageNumber}`;
+		return `https://api.github.com/users/${username}/repos?type=owner&sort=created&direction=desc&per_page=${this.PER_PAGE_COUNT}&page=${pageNumber}`;
 	}
 }
