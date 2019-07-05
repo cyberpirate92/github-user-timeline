@@ -9,7 +9,7 @@ branches:
 before_script:
   - npm install -g @angular/cli
 script:
-  - ng build --prod --base-href https://ngravi.com/github-user-timeline/
+  - ng build --prod --base-href https://cyberpirate92.github.io/github-user-timeline/
 deploy:
   provider: pages
   skip_cleanup: true
